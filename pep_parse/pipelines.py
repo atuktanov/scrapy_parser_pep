@@ -1,17 +1,20 @@
 import datetime as dt
 
+from scrapy.exceptions import DropItem
+
 from pep_parse.settings import BASE_DIR
 
 
 class PepParsePipeline:
-    statuses = {}
-    total = 0
 
     def open_spider(self, spider):
-        pass
+        self.statuses = {}
+        self.total = 0
 
     def process_item(self, item, spider):
         self.total += 1
+        if 'status' not in item:
+            raise DropItem('Не найден ключ "status"')
         self.statuses[item['status']] = (
             self.statuses.get(item['status'], 0) + 1)
         return item
@@ -23,6 +26,6 @@ class PepParsePipeline:
         filename = f'status_summary_{now}.csv'
         with open(filepath / filename, mode='w', encoding='utf-8') as f:
             f.write('Статус,Количество\n')
-            for stat in self.statuses:
-                f.write(f'{stat},{self.statuses[stat]}\n')
+            for status in self.statuses:
+                f.write(f'{status},{self.statuses[status]}\n')
             f.write(f'Total,{self.total}\n')
