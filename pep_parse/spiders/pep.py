@@ -14,10 +14,11 @@ class PepSpider(scrapy.Spider):
             yield response.follow(pep_link, callback=self.parse_pep)
 
     def parse_pep(self, response):
-        title = response.css('.page-title::text').get().split()
+        title = ''.join(
+            response.css('.page-title ::text').getall()).split(' – ')
         data = {
-            'number': title[1],
-            'name': ' '. join(title[3:]),
+            'number': title[0].split()[1],
+            'name': title[1],
             'status': response.xpath(
                 "//dt[contains(., 'Status')]/"
                 "following-sibling::dd[1]/text()").get()
