@@ -25,6 +25,6 @@ pip install -r requirements.txt
 scrapy crawl pep
 ```
 
-## Авторы проекта
+## Над проектом работали
 
 - [Алексей Туктанов](https://t.me/atuktanov)
