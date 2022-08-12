@@ -2,7 +2,7 @@ import datetime as dt
 
 from scrapy.exceptions import DropItem
 
-from pep_parse.settings import BASE_DIR
+from pep_parse.settings import BASE_DIR, RESULT_DIR
 
 
 class PepParsePipeline:
@@ -20,7 +20,7 @@ class PepParsePipeline:
         return item
 
     def close_spider(self, spider):
-        filepath = BASE_DIR / 'results'
+        filepath = BASE_DIR / RESULT_DIR
         filepath.mkdir(exist_ok=True)
         now = dt.datetime.utcnow().strftime('%Y-%m-%d_%H-%M-%S')
         filename = f'status_summary_{now}.csv'
